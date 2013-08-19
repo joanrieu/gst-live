@@ -2,8 +2,9 @@
 
 source ~/.config/twitch.key
 
+QUEUE="queue leaky=downstream"
 CAPS="videorate ! video/x-raw, framerate=30/1 ! videoconvert"
-MIXER="videomixer name=vmix ! $CAPS"
+MIXER="videomixer name=vmix"
 ENCODER=(
   x264enc
   bitrate=768
@@ -25,7 +26,7 @@ function debug {
 }
 
 function add_src {
-  APPEND="$@ ! queue ! $CAPS ! vmix. $APPEND"
+  APPEND="$@ ! $QUEUE ! $CAPS ! vmix. $APPEND"
 }
 
 function desktop {
@@ -38,5 +39,5 @@ function webcam {
 
 source <(cat)
 
-PIPELINE="$MIXER ! queue ! ${ENCODER[@]} ! $MUXER ! queue ! $SINK $APPEND"
+PIPELINE="$MIXER ! $CAPS ! $QUEUE ! ${ENCODER[@]} ! $MUXER ! $QUEUE ! $SINK $APPEND"
 exec gst-launch-1.0 $PIPELINE
