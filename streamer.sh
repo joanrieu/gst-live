@@ -29,11 +29,11 @@ function add_src {
 }
 
 function desktop {
-  add_src ximagesrc do-timestamp=true $@
+  add_src ximagesrc $@
 }
 
 function webcam {
-  add_src v4l2src do-timestamp=true $@
+  add_src v4l2src $@
 }
 
 source <(cat)
